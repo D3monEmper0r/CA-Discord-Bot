@@ -1,0 +1,10 @@
+#config Files
+configs/config.yaml
+configs/loadconfig.py
+
+#pycache
+configs/__pycache__/
+cogs/__pycache__/
+
+#databases
+db/botdata.db
