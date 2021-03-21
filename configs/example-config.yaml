@@ -1,0 +1,20 @@
+Bot:
+  prefix: .
+  serverid: 123456789
+  token: <your Bot-token>
+Server:
+  reactrolechannelid: 123456789
+  logchannelid: 123456789
+  channelpart: er-Tisch
+  channelcategoryid: 123456789
+  secondsuntilmove: 30
+  ignoredchannels:
+    - 2er-Tisch 🚫
+    - 3er-Tisch 🚫
+  finalchannelid: 123456789
+  greetmsg: some join text (happy)
+  leavemsg: some leave text (sad)
+  joinroleid: 123456789
+  reactrolemsgid: 123456789
+Db:
+  main: ./db/database.db
