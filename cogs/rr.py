@@ -88,7 +88,7 @@ class ReactRole(commands.Cog):
                 await reactUser.remove_roles(r)
 
     ##### commands #####
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
     async def rrCreate(self, ctx):
         create(c.DB)
@@ -97,7 +97,7 @@ class ReactRole(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
     async def rrAdd(self, ctx, *, reactRole):
         await ctx.channel.purge(limit = 1)
@@ -106,7 +106,7 @@ class ReactRole(commands.Cog):
         emoji = reactRole.split(' ')[1]
         fill(c.DB, role, emoji)
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
     async def rrUpdate(self, ctx):
         await ctx.channel.purge(limit = 1)
@@ -114,28 +114,28 @@ class ReactRole(commands.Cog):
         message = await channel.fetch_message(c.reactMsgId)
         desc = ''
         for item in data(c.DB):
-            desc += item[0] + ': ' + item[1] + '\n'
+            desc += item[1] + ': ' + item[0] + '\n'
         embed = discord.Embed(title='React to give yourself a role.', description=desc, color=0xa0089b)
         await message.edit(embed=embed)
         await message.clear_reactions()
         for item in data(c.DB):
             await message.add_reaction(item[1])
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
     async def rrRemove(self, ctx, role):
         await ctx.channel.purge(limit = 1)
         g = self.client.get_guild(c.serverId)
         delete(c.DB, role)
     
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['e'])
     async def get_e(self, ctx):
         g = self.client.get_guild(c.serverId)
         for e in await g.fetch_emojis():
             await ctx.send(e)
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['r'])
     async def get_r(self, ctx, role):
         g = self.client.get_guild(c.serverId)

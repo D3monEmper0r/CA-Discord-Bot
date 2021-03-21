@@ -57,7 +57,7 @@ class Move(commands.Cog):
                             for member in member_lst:
                                 await member.edit(voice_channel=ch)       
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['voiceinfo', 'voiceInfo'])
     async def vInfo(self, ctx):
         #g = self.client.get_guild(c.serverId)
@@ -66,7 +66,7 @@ class Move(commands.Cog):
         for m in channel.members:
             await ctx.send(m)
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['channeltrackedinfo', 'channelTrackedInfo', 'cTrackedinfo'])
     async def cTrackedInfo(self, ctx):
         g = self.client.get_guild(c.serverId)
@@ -80,7 +80,7 @@ class Move(commands.Cog):
         channel_lst = '[\n' + str(channel_lst).replace('>, <', '>, \n<').strip('[').strip(']') + '\n]'
         await log.send(channel_lst)
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['ignoredinfo', 'ignoredInfo'])
     async def iInfo(self, ctx):
         for channel in c.ignoredChannels:

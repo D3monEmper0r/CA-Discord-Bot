@@ -9,14 +9,14 @@ class Misc(commands.Cog):
         self.client = client
 
     ##### commands #####
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['clear'])
     async def purge(self, ctx, amount = 100):
         log = self.client.get_channel(c.logChannel)
         await ctx.channel.purge(limit = amount)
         await log.send(f':arrow_forward: succsessfully purged {amount} messages in #{ctx.channel.name}')
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test', 'Café Antik')
+    @commands.has_any_role(c.adminRole, c.managmentRole, c.memberRole)
     @commands.command()
     async def ping(self, ctx):
         ping = ctx.message
@@ -26,9 +26,8 @@ class Misc(commands.Cog):
         latency = int(latency.total_seconds() * 1000)
         await pong.edit(content=f':ping_pong: Pong! ({latency} ms)')
         await log.send(f':arrow_forward: succsessfully executed ping command in #{ctx.channel.name}')
-        #print(f'Pong! ({latency} ms)')
 
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
     async def dcInfo(self, ctx):
         g = self.client.get_guild(c.serverId)
@@ -42,14 +41,21 @@ class Misc(commands.Cog):
                 await ctx.send(f':arrow_right: {r}')
         await ctx.send(f':white_check_mark: {len(g.roles)}')
 
-    ##### commands #####
+    @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['quit', 'kill'], hidden=True)
-    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
     async def logout(self, ctx):
         await ctx.channel.purge(limit = 1)
         await ctx.send(f':arrow_right: Bot successfully killed by {ctx.author}')
         await self.client.logout()
         sys.exit(0)
+
+    @commands.has_any_role(c.memberRole)
+    @commands.command()
+    async def botInfo(self, ctx):
+        await ctx.channel.purge(limit = 1)
+        embed = discord.Embed(title='CA-Discord-Bot', url='https://github.com/D3monEmper0r/CA-Discord-Bot/tree/main', description='Wenn du sehen willst wie der Bot arbeitet, \noder welche Daten genutzt werden, \nkannst du dir auf GitHub den Code anschauen.', color=0xa0089b)
+        embed.set_author(name='GitHub', icon_url='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/1024px-Github-desktop-logo-symbol.svg.png')
+        await ctx.send(embed=embed)
 
 ##### Finalize and run #####
 def setup(client):
