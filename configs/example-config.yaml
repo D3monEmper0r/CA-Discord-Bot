@@ -1,7 +1,7 @@
 Bot:
   prefix: .
   serverid: 123456789
-  token: NzY5MDc0Nzk3MTIzNDY5MzQz.X5JuuA.ri4D_driVfoe3gDx8FqgYk9opTQ
+  token: <your Bot-token>
 Server:
   reactrolechannelid: 123456789
   logchannelid: 123456789
