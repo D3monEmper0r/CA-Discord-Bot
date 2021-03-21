@@ -16,5 +16,8 @@ Server:
   leavemsg: some leave text (sad)
   joinroleid: 123456789
   reactrolemsgid: 123456789
+  adminrole: 
+  botmanagementrole: 
+  memberrole: 
 Db:
   main: ./db/database.db
