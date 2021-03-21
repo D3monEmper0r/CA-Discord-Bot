@@ -2,7 +2,6 @@
 import discord
 import sqlite3
 from .__init__ import c
-from datetime import datetime
 from discord.ext import commands
 
 def create(db):
@@ -21,6 +20,15 @@ def fill(db, role, emote):
     c = conn.cursor()
     
     c.execute(f'INSERT INTO reactionRole VALUES ("{role}", "{emote}")')
+
+    conn.commit()
+    conn.close()
+
+def delete(db, role):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    
+    c.execute(f'DELETE FROM reactionRole WHERE role = "{role}"')
 
     conn.commit()
     conn.close()
@@ -109,8 +117,16 @@ class ReactRole(commands.Cog):
             desc += item[0] + ': ' + item[1] + '\n'
         embed = discord.Embed(title='React to give yourself a role.', description=desc, color=0xa0089b)
         await message.edit(embed=embed)
+        await message.clear_reactions()
         for item in data(c.DB):
             await message.add_reaction(item[1])
+
+    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.command()
+    async def rrRemove(self, ctx, role):
+        await ctx.channel.purge(limit = 1)
+        g = self.client.get_guild(c.serverId)
+        delete(c.DB, role)
     
     @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
     @commands.command(aliases=['e'])
