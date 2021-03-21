@@ -28,3 +28,8 @@ if os.path.isfile(configFile):
         serverId = temp['Bot']['serverid']
     except ImportError:
         print('Loadconfig, import ERROR: Server ID')
+    try:
+        temp = loader(configFile)
+        DB = temp['Db']['main']
+    except ImportError:
+        print('Loadconfig, import ERROR: DB')
