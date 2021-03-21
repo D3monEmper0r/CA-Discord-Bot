@@ -8,10 +8,10 @@ If you are looking for a python discord bot to host for yourself and and customi
 
 ## Installation
 <pre><code> # <span class="pl-s1">clone this repo</span>
- $ <span class="pl-s1">git clone https://github.com/D3monEmper0r/TDE-discordBot.git<span>
+ $ <span class="pl-s1">git clone https://github.com/D3monEmper0r/CA-Discord-Bot.git<span>
 
- # <span class="pl-s1">change the working directory to TDE-DiscordBot<span>
- $ <span class="pl-s1"><span class="pl-c1">cd</span> TDE-discordBot</span>
+ # <span class="pl-s1">change the working directory to CA-Discord-Bot<span>
+ $ <span class="pl-s1"><span class="pl-c1">cd</span> CA-Discord-Bot</span>
 
  # <span class="pl-s1">install the requirements</span>
  $ <span class="pl-s1">python3 -m pip install -r requirements.txt</span></code></pre>
