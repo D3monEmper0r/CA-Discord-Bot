@@ -25,11 +25,21 @@ def fill(db, role, emote):
     conn.commit()
     conn.close()
 
-def search(db):
+def data(db):
     conn = sqlite3.connect(db)
     c = conn.cursor()
 
     c.execute(f'SELECT * FROM reactionRole')
+    result = c.fetchall()
+
+    conn.close()
+    return(result)
+
+def search(db, emote):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+
+    c.execute(f'SELECT * FROM reactionRole WHERE emote = "{emote}"')
     result = c.fetchall()
 
     conn.close()
@@ -44,25 +54,27 @@ class ReactRole(commands.Cog):
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         reactUser = payload.member
-        log = self.client.get_channel(c.logChannel)
         g = self.client.get_guild(c.serverId)
-        emoji = payload.emoji.name
-        emoji = emoji.capitalize()
-        print(f'emoji: {payload.emoji}, emoji name: {emoji}')
-        r = discord.utils.get(g.roles, name=emoji)
+        emoji = payload.emoji
+        tmp = search(c.DB, emoji)[0][0]
+        for role in await g.fetch_roles():
+            if role.mention == tmp:
+                r = role
+
         if r != None and payload.channel_id == c.reactRoleId:
             if reactUser != self.client.user:
                 await reactUser.add_roles(r)
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
-        log = self.client.get_channel(c.logChannel)
-        g = self.client.get_guild(c.serverId)
         reactUser = discord.utils.get(self.client.get_all_members(), id=payload.user_id)
-        emoji = payload.emoji.name
-        emoji = emoji.capitalize()
-        print(f'emoji: {payload.emoji}, emoji name: {emoji}')
-        r = discord.utils.get(g.roles, name=emoji)
+        g = self.client.get_guild(c.serverId)
+        emoji = payload.emoji
+        tmp = search(c.DB, emoji)[0][0]
+        for role in await g.fetch_roles():
+            if role.mention == tmp:
+                r = role
+
         if r != None and payload.channel_id == c.reactRoleId:
             if reactUser != self.client.user:
                 await reactUser.remove_roles(r)
@@ -93,11 +105,11 @@ class ReactRole(commands.Cog):
         channel = await self.client.fetch_channel(c.reactRoleId)
         message = await channel.fetch_message(c.reactMsgId)
         desc = ''
-        for item in search(c.DB):
+        for item in data(c.DB):
             desc += item[0] + ': ' + item[1] + '\n'
         embed = discord.Embed(title='React to give yourself a role.', description=desc, color=0xa0089b)
         await message.edit(embed=embed)
-        for item in search(c.DB):
+        for item in data(c.DB):
             await message.add_reaction(item[1])
     
     @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
@@ -106,6 +118,16 @@ class ReactRole(commands.Cog):
         g = self.client.get_guild(c.serverId)
         for e in await g.fetch_emojis():
             await ctx.send(e)
+
+    @commands.has_any_role('Café Antik Geschäftsführung', 'Jonnys Bot test')
+    @commands.command(aliases=['r'])
+    async def get_r(self, ctx, role):
+        g = self.client.get_guild(c.serverId)
+        print(role)
+        for r in await g.fetch_roles():
+            print('CA role: ', r.mention)
+            if r.mention == role:
+                await ctx.send(r.id)
 
 ##### Finalize and run #####    
 def setup(client):
