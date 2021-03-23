@@ -1,8 +1,29 @@
 ##### Imports #####
+import os
+import yaml
 import discord
 import sqlite3
 from .__init__ import c
+from pathlib import Path
 from discord.ext import commands
+
+def reloadServerConfig():
+    f = Path(os.getcwd())
+    global cfg
+    cfg = f"{f}/configs/config.yaml"
+    global chConfig
+    chConfig = yaml.safe_load(open(cfg))['Server']
+
+def setConfigMsgId(msgID):
+    print(msgID)
+    data = yaml.safe_load(open(cfg))
+    data['Server']['reactrolemsgid'] = msgID
+    with open(cfg, 'w') as f: #, 'utf-8'
+        yaml.safe_dump(data, f, encoding='utf-8', allow_unicode=True)
+    f.close()
+
+#import config data
+reloadServerConfig()
 
 def create(db):
     conn = sqlite3.connect(db)
@@ -96,6 +117,14 @@ class ReactRole(commands.Cog):
         embed = discord.Embed(title='React to give yourself a role.', description='', color=0xa0089b)
         await ctx.send(embed=embed)
 
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['setMSG_ID'])
+    async def rrSet(self, ctx, msgID):
+        await ctx.channel.purge(limit = 1)
+        msg_id = int(msgID)
+        setConfigMsgId(msg_id)
+        reloadServerConfig()
+        #await ctx.send(f'{chConfig["reactrolemsgid"]}')
 
     @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
@@ -111,7 +140,7 @@ class ReactRole(commands.Cog):
     async def rrUpdate(self, ctx):
         await ctx.channel.purge(limit = 1)
         channel = await self.client.fetch_channel(c.reactRoleId)
-        message = await channel.fetch_message(c.reactMsgId)
+        message = await channel.fetch_message(chConfig['reactrolemsgid']) #line changed
         desc = ''
         for item in data(c.DB):
             desc += item[1] + ': ' + item[0] + '\n'
@@ -120,6 +149,13 @@ class ReactRole(commands.Cog):
         await message.clear_reactions()
         for item in data(c.DB):
             await message.add_reaction(item[1])
+
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['reloadMSG_ID'])
+    async def rrReloadCfg(self, ctx):
+        reloadServerConfig()
+        await ctx.send(chConfig)
+        await ctx.send(chConfig['reactrolemsgid'])
 
     @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command()
