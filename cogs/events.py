@@ -43,6 +43,15 @@ class Event(commands.Cog):
         await member.add_roles(joinRole)
         await log.send(f':arrow_forward: gave {member}: {joinRole}')
 
+#tmp hardcoded, will be removed later
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        #print(message.channel.id, message.author.id)
+        trusted = [206512931590897664, 206459837188407296, 285140174432763904, 769074797123469343]
+        if message.channel.id == 823913121663549440 and message.author.id not in trusted:
+            print(f'Message in rollen: {message}, \nSend by: {message.author.name}')
+            await message.delete()
+
 ##### Finalize and run #####    
 def setup(client):
     client.add_cog(Event(client))
