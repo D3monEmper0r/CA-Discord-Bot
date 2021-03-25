@@ -26,7 +26,7 @@ class Move(commands.Cog):
             for user in after.channel.members:
                 member_lst.append(user)
             if len(after.channel.members) > after.channel.user_limit and int(after.channel.user_limit) != 0:
-                await log.send(f':arrow_right: too many people: ')
+                await log.send(f':arrow_right: too many people in {after.channel.name}')
                 for m in after.channel.members:
                     await log.send(f':warning: {m}')
                 await log.send(f':arrow_forward: waiting {c.sleepTime} seconds until move...')
@@ -46,7 +46,9 @@ class Move(commands.Cog):
                             await log.send(f':arrow_forward: problem solved, channel members moved: {after.channel.name} -> {ch.name}')
                             #move
                             for member in member_lst:
-                                await member.edit(voice_channel=ch) 
+                                await member.edit(voice_channel=ch)
+                                await log.send(f':arrow_forward: moved {member} successfully')
+
                     elif int(ch.user_limit) == 0 and len(member_lst) > 5: #changed after.channel.members into member_lst
                         if ch.name not in c.ignoredChannels:
                             #log
@@ -55,8 +57,9 @@ class Move(commands.Cog):
                             await log.send(f':arrow_forward: problem solved, channel members moved: {after.channel.name} -> {ch.name}')
                             #move
                             for member in member_lst:
-                                await member.edit(voice_channel=ch)       
-
+                                await member.edit(voice_channel=ch)
+                                await log.send(f':arrow_forward: moved {member} successfully')
+                                       
     @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['voiceinfo', 'voiceInfo'])
     async def vInfo(self, ctx):
