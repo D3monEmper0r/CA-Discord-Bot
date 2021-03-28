@@ -47,7 +47,7 @@ class Move(commands.Cog):
                             #move
                             for member in member_lst:
                                 await member.edit(voice_channel=ch)
-                                await log.send(f':arrow_forward: moved {member} successfully')
+                                await log.send(f':broom: moved {member} successfully')
 
                     elif int(ch.user_limit) == 0 and len(member_lst) > 5: #changed after.channel.members into member_lst
                         if ch.name not in c.ignoredChannels:
@@ -58,7 +58,7 @@ class Move(commands.Cog):
                             #move
                             for member in member_lst:
                                 await member.edit(voice_channel=ch)
-                                await log.send(f':arrow_forward: moved {member} successfully')
+                                await log.send(f':broom: moved {member} successfully')
                                        
     @commands.has_any_role(c.adminRole, c.managmentRole)
     @commands.command(aliases=['voiceinfo', 'voiceInfo'])
