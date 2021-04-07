@@ -1,6 +1,7 @@
 ##### Imports #####
 import discord
 from .__init__ import c
+from datetime import datetime
 from discord.ext import commands
 
 class Misc(commands.Cog):
@@ -53,7 +54,7 @@ class Misc(commands.Cog):
     @commands.command()
     async def botInfo(self, ctx):
         await ctx.channel.purge(limit = 1)
-        embed = discord.Embed(title='CA-Discord-Bot', url='https://github.com/D3monEmper0r/CA-Discord-Bot/tree/main', description='Wenn du sehen willst wie der Bot arbeitet, \noder welche Daten genutzt werden, \nkannst du dir auf GitHub den Code anschauen.', color=0xa0089b)
+        embed = discord.Embed(title='CA-Discord-Bot', url='https://github.com/D3monEmper0r/CA-Discord-Bot/tree/main', description='Source Code here.', color=0xa0089b)
         embed.set_author(name='GitHub', icon_url='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/1024px-Github-desktop-logo-symbol.svg.png')
         await ctx.send(embed=embed)
 
