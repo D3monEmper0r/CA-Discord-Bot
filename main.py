@@ -8,6 +8,7 @@ from discord.ext import commands, tasks
 
 intents = discord.Intents.default()
 intents.members = True
+intents.presences = True
 
 client = commands.Bot(command_prefix = c.prefix, intents=intents)
 #client.remove_command('help')
