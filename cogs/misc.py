@@ -50,6 +50,70 @@ class Misc(commands.Cog):
         await self.client.logout()
         sys.exit(0)
 
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['j'], hidden=True)
+    async def join(self, ctx):
+        v = ctx.author.voice
+        if not v:
+            await ctx.send("You need to be connected in a voice channel to use this command!")
+        else:
+            channel = ctx.author.voice.channel
+            await ctx.send(channel)
+            await channel.connect()
+
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['jU'], hidden=True)
+    async def joinUser(self, ctx, usr):
+        v = await self.client.fetch_user(usr)
+        g = self.client.get_guild(c.serverId)
+        if not v:
+            await ctx.send("You need to specify a userID to use this command!")
+        else:
+            channel = g.get_member(v.id).voice.channel
+            await ctx.send(channel)
+            await channel.connect()
+
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['l'], hidden=True)
+    async def leave(self, ctx):
+        await ctx.guild.voice_client.disconnect()
+
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['tm'], hidden=True)
+    async def testmove(self, ctx, new):
+        g = self.client.get_guild(c.serverId)
+        new = self.client.get_channel(int(new))
+        v = ctx.author.voice
+        if not v:
+            await ctx.send("You need to be connected in a voice channel to use this command!")
+        else:
+            channel = v.channel
+            for m in channel.members:
+                await m.edit(voice_channel=new)
+        
+        
+        #await ctx.send(channel)
+        #await ctx.send(role)
+
+    @commands.has_any_role(c.adminRole, c.managmentRole)
+    @commands.command(aliases=['uInfo'], hidden=True)
+    async def usrInfo(self, ctx, usr):
+        g = self.client.get_guild(c.serverId)
+        member = await self.client.fetch_user(usr)
+        member = g.get_member(member.id)
+        if member != None:
+            await ctx.send(f'Member: ```{member}```')
+            await ctx.send(f'Activity: ```{member.activities}```')
+            if len(member.activities) != 0:
+                await ctx.send(f'Base: ```{member.activities[2]}```')
+            if len(member.activities) > 1:
+                await ctx.send(f'Spotify: ```{member.activities[1]}```')
+            await ctx.send(f'voiceState: ```{member.voice}```')
+            if member.voice != None:
+                await ctx.send(f'stream?: ```{member.voice.self_stream}```')
+            else:
+                await ctx.send(f'stream?: ```False```')
+
     @commands.has_any_role(c.memberRole)
     @commands.command()
     async def botInfo(self, ctx):
