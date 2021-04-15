@@ -16,9 +16,10 @@ class Polls(commands.Cog):
     ##### commands #####
     async def mkPoll(self, ctx, seconds: int, question: str, *options):
         if len(options) > 10:
-			await ctx.send("You can only supply a maximum of 10 options.")
+            print('Max 10 options!')
+			#await ctx.send('You can only supply a maximum of 10 options.')
         else:
-            embed = Embed(title="Poll", description= question, color=0xa0089b, timestamp= datetime.now())
+            embed = Embed(title= "Poll", description= question, color= 0xa0089b, timestamp= datetime.now())
 
 
 ##### Finalize and run #####
