@@ -52,7 +52,6 @@ class Move(commands.Cog):
                     elif int(ch.user_limit) == 0 and len(member_lst) > 5: #changed after.channel.members into member_lst
                         if ch.name not in c.ignoredChannels:
                             #log
-                                                                                                                            #await log.send(f':arrow_forward: too many people in {after.channel.name}: problem solved')
                             await log.send(f':arrow_right: too many people in {after.channel.name}')
                             await log.send(f':arrow_forward: problem solved, channel members moved: {after.channel.name} -> {ch.name}')
                             #move
