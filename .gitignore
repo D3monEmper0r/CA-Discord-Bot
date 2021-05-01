@@ -8,3 +8,6 @@ cogs/__pycache__/
 
 #databases
 db/botdata.db
+
+#temp files
+tmp.py

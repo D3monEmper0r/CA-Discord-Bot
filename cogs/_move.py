@@ -4,12 +4,35 @@ import asyncio
 from .__init__ import c
 from discord.ext import commands
 
-class Move(commands.Cog):
+##### Functions #####
+async def move(member, before, after):
+    await member.send(f'{member}, {before}, {after}')
+    await member.edit(voice_channel=after)
+
+class _Move(commands.Cog):
     ##### Initalization #####
     def __init__(self, client):
         self.client = client
 
-    ##### events #####
+    ##### commands #####
+    @commands.command()
+    async def m(self, ctx, after):
+        author = ctx.message.author
+        before = ctx.author.voice.channel
+        after = self.client.get_channel(int(after))
+        await move(author, before, after)
+
+    @commands.command()
+    async def mt(self, ctx):
+        author = ctx.message.author
+
+        await author.send(channel_list)
+
+    @commands.Cog.listener()
+    async def on_voice_state_update(self, member, before, after):
+        pass
+
+    """
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         #vars
@@ -60,36 +83,8 @@ class Move(commands.Cog):
                                 #await asyncio.sleep(1)  #added little delay
                                 await member.edit(voice_channel=ch)
                                 #await log.send(f':broom: moved {member} successfully')
-                                       
-    @commands.has_any_role(c.adminRole, c.managmentRole)
-    @commands.command(aliases=['voiceinfo', 'voiceInfo'])
-    async def vInfo(self, ctx):
-        #g = self.client.get_guild(c.serverId)
-        channel = self.client.get_channel(812057228739084288)
-        await ctx.send('----------\nvMember:\n----------')
-        for m in channel.members:
-            await ctx.send(m)
-
-    @commands.has_any_role(c.adminRole, c.managmentRole)
-    @commands.command(aliases=['channeltrackedinfo', 'channelTrackedInfo', 'cTrackedinfo'])
-    async def cTrackedInfo(self, ctx):
-        g = self.client.get_guild(c.serverId)
-        log = self.client.get_channel(c.logChannel)
-        channel_lst = []
-        await ctx.send('----------\nTracked Channels:\n----------')
-        for channel in g.channels:
-            if str(c.channelPart) in str(channel.name) or str(c.finalChannel) == str(channel.id):
-                if str(channel.name) not in c.ignoredChannels:
-                    channel_lst.append(channel)
-        channel_lst = '[\n' + str(channel_lst).replace('>, <', '>, \n<').strip('[').strip(']') + '\n]'
-        await log.send(channel_lst)
-
-    @commands.has_any_role(c.adminRole, c.managmentRole)
-    @commands.command(aliases=['ignoredinfo', 'ignoredInfo'])
-    async def iInfo(self, ctx):
-        for channel in c.ignoredChannels:
-            await ctx.send(f':arrow_forward: {channel}')
-
-##### Finalize and run #####    
+    """
+         
+##### Finalize and run #####
 def setup(client):
-    client.add_cog(Move(client))
+    client.add_cog(_Move(client))

@@ -31,9 +31,12 @@ class Event(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
-        print(ctx.command.name + ' was used incorrectly!')
-        print(error)
-        await ctx.send(error)
+        try:
+            print(ctx.command.name + ' was used incorrectly!')
+            print(error)
+            await ctx.send(error)
+        except (AttributeError):
+            pass
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
